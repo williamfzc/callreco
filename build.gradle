@@ -1,0 +1,21 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id "com.diffplug.spotless" version "5.15.2"
+}
+
+allprojects {
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        mavenCentral()
+    }
+}
+
+spotless { // if you are using build.gradle.kts, instead of 'spotless {' use:
+    // configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    kotlin {
+        // by default the target is every '.kt' and '.kts` file in the java sourcesets
+        ktfmt()    // has its own section below
+    }
+}
