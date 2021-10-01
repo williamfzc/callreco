@@ -1,5 +1,0 @@
-object CallrecoAPI {
-    fun first() {
-
-    }
-}
