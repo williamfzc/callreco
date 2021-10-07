@@ -31,7 +31,6 @@ class CrTransformer(private val project: Project) : Transform() {
     override fun transform(transformInvocation: TransformInvocation) {
         super.transform(transformInvocation)
 
-        val instr = CrInstrumentor()
         val outputProvider = transformInvocation.outputProvider
         transformInvocation.inputs.forEach { eachInput ->
             eachInput.directoryInputs.forEach { eachDirInput ->
@@ -51,7 +50,7 @@ class CrTransformer(private val project: Project) : Transform() {
                         val destFile = File(eachFile.absolutePath.replace(src.absolutePath, dest.absolutePath))
                         if (eachFile.isJvmClass()) {
                             logD("instr $eachFile to $destFile")
-                            val instrumented = instr.instrument(eachFile.readBytes())
+                            val instrumented = CrInstrumentor.instrument(eachFile.readBytes())
 
                             destFile.parentFile.mkdirs()
                             destFile.writeBytes(instrumented)
