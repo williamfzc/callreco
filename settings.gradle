@@ -1,3 +1,4 @@
 include 'callreco-android-plugin'
 include 'callreco-core'
+include 'callreco-agent'
 include 'callreco-demo'

@@ -1,6 +1,6 @@
-package com.williamfzc.callreco.core.rt
+package com.williamfzc.callreco.agent.rt
 
-import com.williamfzc.callreco.core.storage.CrStorage
+import com.williamfzc.callreco.agent.storage.CrStorage
 
 object CrRuntime {
     fun getProbes(classId: Long, probesCount: Int): IntArray {

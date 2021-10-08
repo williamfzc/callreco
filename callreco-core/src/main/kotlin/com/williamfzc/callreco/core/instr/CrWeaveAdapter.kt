@@ -1,7 +1,6 @@
 package com.williamfzc.callreco.core.instr
 
 import com.williamfzc.callreco.core.log.logD
-import com.williamfzc.callreco.core.rt.CrRuntime
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
@@ -15,6 +14,7 @@ val random = SecureRandom("callreco".toByteArray())
 internal object CrWeaveHelper {
     const val NAME_FIELD_DATA = "\$crData"
     const val NAME_METHOD_DATA = "\$crInit"
+    const val NAME_CLASS_AGENT_RT = "com.williamfzc.callreco.agent.rt.CrRuntime"
 }
 
 class CrWeaveAdapter(
@@ -116,7 +116,7 @@ class CrWeaveAdapter(
         mv.pushIntInsn(methodCounter)
         mv.visitMethodInsn(
             INVOKESTATIC,
-            CrRuntime::class.java.canonicalName,
+            CrWeaveHelper.NAME_CLASS_AGENT_RT,
             "getProbes",
             "(JI)[I",
             false
