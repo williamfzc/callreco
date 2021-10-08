@@ -112,10 +112,15 @@ class CrWeaveAdapter(
         mv.visitInsn(ARETURN)
         mv.visitLabel(l2)
         mv.visitFrame(F_NEW, 1, arrayOf<Any>("[I"), 0, null)
+        mv.visitFieldInsn(
+            GETSTATIC,
+            CrWeaveHelper.NAME_CLASS_AGENT_RT,
+            "INSTANCE",
+            "L${CrWeaveHelper.NAME_CLASS_AGENT_RT};")
         mv.visitLdcInsn(clazzId)
         mv.pushIntInsn(methodCounter)
         mv.visitMethodInsn(
-            INVOKESTATIC,
+            INVOKEVIRTUAL,
             CrWeaveHelper.NAME_CLASS_AGENT_RT,
             "getProbes",
             "(JI)[I",
