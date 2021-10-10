@@ -123,7 +123,7 @@ class CrWeaveAdapter(
                 GETSTATIC,
                 CrWeaveHelper.NAME_CLASS_AGENT_RT,
                 "INSTANCE",
-                "L${CrWeaveHelper.NAME_CLASS_AGENT_RT};")
+                "L${CrWeaveHelper.NAME_CLASS_AGENT_RT.replace('.', '/')};")
         mv.visitLdcInsn(clazzId)
         mv.pushIntInsn(methodCounter)
         mv.visitMethodInsn(
