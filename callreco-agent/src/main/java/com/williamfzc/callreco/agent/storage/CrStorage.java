@@ -20,6 +20,10 @@ public class CrStorage {
         return unit;
     }
 
+    public final Map<Long, CrProbeUnit> getData() {
+        return data;
+    }
+
     static {
         INSTANCE = new CrStorage();
     }

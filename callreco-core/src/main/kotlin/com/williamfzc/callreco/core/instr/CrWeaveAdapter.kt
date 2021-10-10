@@ -9,7 +9,14 @@ import org.objectweb.asm.commons.AdviceAdapter
 import java.security.SecureRandom
 
 val methodMapping = mutableMapOf<Long, String>()
-val random = SecureRandom("callreco".toByteArray())
+
+internal object IdGenerator {
+    private var count = 0L
+
+    fun nextId(): Long {
+        return count++
+    }
+}
 
 internal object CrWeaveHelper {
     const val NAME_FIELD_DATA = "\$crData"
@@ -18,19 +25,19 @@ internal object CrWeaveHelper {
 }
 
 class CrWeaveAdapter(
-    cv: ClassVisitor
+        cv: ClassVisitor
 ) : ClassVisitor(ASM7, cv) {
     private lateinit var clazzName: String
     private var clazzId: Long = -1
     private var methodCounter: Int = 0
 
     override fun visit(
-        version: Int,
-        access: Int,
-        name: String?,
-        signature: String?,
-        superName: String?,
-        interfaces: Array<out String>?
+            version: Int,
+            access: Int,
+            name: String?,
+            signature: String?,
+            superName: String?,
+            interfaces: Array<out String>?
     ) {
         this.clazzName = name.orEmpty()
         this.clazzId = genClazzId()
@@ -44,18 +51,18 @@ class CrWeaveAdapter(
     }
 
     override fun visitMethod(
-        access: Int,
-        name: String?,
-        descriptor: String?,
-        signature: String?,
-        exceptions: Array<out String>?
+            access: Int,
+            name: String?,
+            descriptor: String?,
+            signature: String?,
+            exceptions: Array<out String>?
     ): MethodVisitor {
         val mv = cv.visitMethod(access, name, descriptor, signature, exceptions)
         return CrWeaveMethodAdapter(clazzName, nextMethodId(), api, mv, access, name, descriptor)
     }
 
     private fun genClazzId(): Long {
-        val uniqueId = random.nextLong()
+        val uniqueId = IdGenerator.nextId()
         if (methodMapping.contains(uniqueId)) {
             return genClazzId()
         }
@@ -66,11 +73,11 @@ class CrWeaveAdapter(
     private fun createCrField() {
         // private static transient int[] $crData;
         val fv = cv.visitField(
-            ACC_PRIVATE + ACC_STATIC + ACC_TRANSIENT,
-            CrWeaveHelper.NAME_FIELD_DATA,
-            "[I",
-            null,
-            null
+                ACC_PRIVATE + ACC_STATIC + ACC_TRANSIENT,
+                CrWeaveHelper.NAME_FIELD_DATA,
+                "[I",
+                null,
+                null
         )
         fv.visitEnd()
     }
@@ -89,18 +96,18 @@ class CrWeaveAdapter(
 //        }
 
         val mv = cv.visitMethod(
-            ACC_PRIVATE + ACC_STATIC,
-            CrWeaveHelper.NAME_METHOD_DATA,
-            "()[I",
-            null,
-            null
+                ACC_PRIVATE + ACC_STATIC,
+                CrWeaveHelper.NAME_METHOD_DATA,
+                "()[I",
+                null,
+                null
         )
         mv.visitCode()
         mv.visitFieldInsn(
-            GETSTATIC,
-            clazzName,
-            CrWeaveHelper.NAME_FIELD_DATA,
-            "[I"
+                GETSTATIC,
+                clazzName,
+                CrWeaveHelper.NAME_FIELD_DATA,
+                "[I"
         )
         mv.visitVarInsn(ASTORE, 0)
         val l1 = Label()
@@ -113,26 +120,26 @@ class CrWeaveAdapter(
         mv.visitLabel(l2)
         mv.visitFrame(F_NEW, 1, arrayOf<Any>("[I"), 0, null)
         mv.visitFieldInsn(
-            GETSTATIC,
-            CrWeaveHelper.NAME_CLASS_AGENT_RT,
-            "INSTANCE",
-            "L${CrWeaveHelper.NAME_CLASS_AGENT_RT};")
+                GETSTATIC,
+                CrWeaveHelper.NAME_CLASS_AGENT_RT,
+                "INSTANCE",
+                "L${CrWeaveHelper.NAME_CLASS_AGENT_RT};")
         mv.visitLdcInsn(clazzId)
         mv.pushIntInsn(methodCounter)
         mv.visitMethodInsn(
-            INVOKEVIRTUAL,
-            CrWeaveHelper.NAME_CLASS_AGENT_RT,
-            "getProbes",
-            "(JI)[I",
-            false
+                INVOKEVIRTUAL,
+                CrWeaveHelper.NAME_CLASS_AGENT_RT,
+                "getProbes",
+                "(JI)[I",
+                false
         )
         mv.visitVarInsn(ASTORE, 1)
         mv.visitVarInsn(ALOAD, 1)
         mv.visitFieldInsn(
-            PUTSTATIC,
-            clazzName,
-            CrWeaveHelper.NAME_FIELD_DATA,
-            "[I"
+                PUTSTATIC,
+                clazzName,
+                CrWeaveHelper.NAME_FIELD_DATA,
+                "[I"
         )
         val l4 = Label()
         mv.visitLabel(l4)
@@ -157,29 +164,29 @@ class CrWeaveAdapter(
 }
 
 class CrWeaveMethodAdapter(
-    private val clazzName: String,
-    private val methodId: Int,
-    api: Int,
-    methodVisitor: MethodVisitor?,
-    access: Int,
-    name: String?,
-    descriptor: String?
+        private val clazzName: String,
+        private val methodId: Int,
+        api: Int,
+        methodVisitor: MethodVisitor?,
+        access: Int,
+        name: String?,
+        descriptor: String?
 ) : AdviceAdapter(
-    api,
-    methodVisitor,
-    access,
-    name,
-    descriptor
+        api,
+        methodVisitor,
+        access,
+        name,
+        descriptor
 ) {
     override fun onMethodEnter() {
         super.onMethodEnter()
         logD("enter method: $name")
         mv.visitMethodInsn(
-            INVOKESTATIC,
-            clazzName,
-            CrWeaveHelper.NAME_METHOD_DATA,
-            "()[I",
-            false
+                INVOKESTATIC,
+                clazzName,
+                CrWeaveHelper.NAME_METHOD_DATA,
+                "()[I",
+                false
         )
         mv.pushIntInsn(methodId)
         mv.visitInsn(DUP2)
