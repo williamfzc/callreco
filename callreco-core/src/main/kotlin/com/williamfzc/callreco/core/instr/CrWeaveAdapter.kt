@@ -73,7 +73,7 @@ class CrWeaveAdapter(
     private fun createCrField() {
         // private static transient int[] $crData;
         val fv = cv.visitField(
-                ACC_PRIVATE + ACC_STATIC + ACC_TRANSIENT,
+                ACC_PRIVATE + ACC_STATIC + ACC_TRANSIENT + ACC_SYNTHETIC,
                 CrWeaveHelper.NAME_FIELD_DATA,
                 "[I",
                 null,
@@ -96,7 +96,7 @@ class CrWeaveAdapter(
 //        }
 
         val mv = cv.visitMethod(
-                ACC_PRIVATE + ACC_STATIC,
+                ACC_PRIVATE + ACC_STATIC + ACC_SYNTHETIC,
                 CrWeaveHelper.NAME_METHOD_DATA,
                 "()[I",
                 null,
