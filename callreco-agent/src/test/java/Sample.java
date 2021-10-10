@@ -15,6 +15,6 @@ public class Sample {
     }
 
     void a() {
-        $crData[0]++;
+        $crInit()[0]++;
     }
 }
