@@ -7,15 +7,12 @@ import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.commons.AdviceAdapter
-import java.security.SecureRandom
-
-val methodMapping = mutableMapOf<Long, String>()
+import java.util.*
 
 internal object IdGenerator {
-    private var count = 0L
-
-    fun nextId(): Long {
-        return count++
+    // same class path -> same class id
+    fun calcId(s: String): Long {
+        return UUID.nameUUIDFromBytes(s.toByteArray()).mostSignificantBits
     }
 }
 
@@ -63,11 +60,8 @@ class CrWeaveAdapter(
     }
 
     private fun genClazzId(): Long {
-        val uniqueId = IdGenerator.nextId()
-        if (methodMapping.contains(uniqueId)) {
-            return genClazzId()
-        }
-        methodMapping[uniqueId] = clazzName
+        val uniqueId = IdGenerator.calcId(clazzName)
+        CrWeaveRecorder.put(uniqueId, clazzName)
         return uniqueId
     }
 
