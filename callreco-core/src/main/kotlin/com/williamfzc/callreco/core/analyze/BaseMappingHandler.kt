@@ -17,4 +17,8 @@ open class BaseMappingHandler {
     }
 
     fun load(jsonFile: File) = load(jsonFile.readText())
+
+    fun isEmpty(): Boolean {
+        return methodMapping.isEmpty()
+    }
 }
