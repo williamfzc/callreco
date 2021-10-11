@@ -1,5 +1,6 @@
 package com.williamfzc.callreco.core.instr
 
+import com.williamfzc.callreco.core.ext.dot2slash
 import com.williamfzc.callreco.core.log.logD
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Label
@@ -105,7 +106,7 @@ class CrWeaveAdapter(
         mv.visitCode()
         mv.visitFieldInsn(
                 GETSTATIC,
-                clazzName,
+                clazzName.dot2slash(),
                 CrWeaveHelper.NAME_FIELD_DATA,
                 "[I"
         )
@@ -121,14 +122,14 @@ class CrWeaveAdapter(
         mv.visitFrame(F_NEW, 1, arrayOf<Any>("[I"), 0, null)
         mv.visitFieldInsn(
                 GETSTATIC,
-                CrWeaveHelper.NAME_CLASS_AGENT_RT,
+                CrWeaveHelper.NAME_CLASS_AGENT_RT.dot2slash(),
                 "INSTANCE",
-                "L${CrWeaveHelper.NAME_CLASS_AGENT_RT.replace('.', '/')};")
+                "L${CrWeaveHelper.NAME_CLASS_AGENT_RT.dot2slash()};")
         mv.visitLdcInsn(clazzId)
         mv.pushIntInsn(methodCounter)
         mv.visitMethodInsn(
                 INVOKEVIRTUAL,
-                CrWeaveHelper.NAME_CLASS_AGENT_RT,
+                CrWeaveHelper.NAME_CLASS_AGENT_RT.dot2slash(),
                 "getProbes",
                 "(JI)[I",
                 false
@@ -137,7 +138,7 @@ class CrWeaveAdapter(
         mv.visitVarInsn(ALOAD, 1)
         mv.visitFieldInsn(
                 PUTSTATIC,
-                clazzName,
+                clazzName.dot2slash(),
                 CrWeaveHelper.NAME_FIELD_DATA,
                 "[I"
         )
