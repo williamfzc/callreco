@@ -2,7 +2,7 @@ set -e
 set -x
 
 echo "compile callreco libs ..."
-./gradlew clean assemble
+./gradlew clean assemble test
 echo "libs compiled"
 
 ANDROID_DEMO_LIB_DIR=demo/android/app/libs

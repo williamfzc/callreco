@@ -6,7 +6,7 @@ import java.util.Map;
 public class CrStorage {
     public static final CrStorage INSTANCE;
 
-    private final static char FLAG_SPLIT_LINE = '\n';
+    public final static char FLAG_SPLIT_LINE = '\n';
     private final Map<Long, CrProbeUnit> data = new HashMap<>();
 
     public CrProbeUnit getProbeUnit(long classId, int probesCount) {
@@ -26,12 +26,20 @@ public class CrStorage {
     }
 
     public final String dump() {
+        return dump(false);
+    }
+
+    public final String dump(boolean reset) {
         StringBuilder sb = new StringBuilder();
         data.values().forEach(each -> {
             sb.append(each.dump());
             sb.append(FLAG_SPLIT_LINE);
         });
         sb.setLength(sb.length() - 1);
+
+        if (reset) {
+            data.clear();
+        }
         return sb.toString();
     }
 

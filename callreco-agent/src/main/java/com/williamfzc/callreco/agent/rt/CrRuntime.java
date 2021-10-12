@@ -16,6 +16,14 @@ public class CrRuntime {
         return CrStorage.INSTANCE.getData();
     }
 
+    public final String dump(boolean reset) {
+        return CrStorage.INSTANCE.dump(reset);
+    }
+
+    public final String dump() {
+        return dump(false);
+    }
+
     private CrRuntime() {
     }
 
