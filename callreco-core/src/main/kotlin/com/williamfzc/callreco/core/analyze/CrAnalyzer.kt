@@ -9,8 +9,10 @@ object CrAnalyzer : BaseMappingHandler() {
     fun loadRuntimeData(data: String) {
         data.split(CrStorage.FLAG_SPLIT_LINE).forEach { eachUnit ->
             val newUnit = CrProbeUnit.load(eachUnit)
-            // todo: unit merge
-            runtimeData[newUnit.classId] = newUnit
+            newUnit.classId.let { clazzId ->
+                runtimeData[clazzId]?.merge(newUnit)
+                runtimeData.putIfAbsent(clazzId, newUnit)
+            }
         }
     }
 }

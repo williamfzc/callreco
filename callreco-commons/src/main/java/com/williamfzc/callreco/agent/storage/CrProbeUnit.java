@@ -5,7 +5,7 @@ import com.williamfzc.callreco.exceptions.CrException;
 import java.util.Arrays;
 
 public class CrProbeUnit {
-    private int[] probes;
+    private final int[] probes;
     private final long classId;
     private final int probesCount;
 
@@ -67,6 +67,20 @@ public class CrProbeUnit {
     public final void reset() {
         for (int i = 0; i < probesCount; i++) {
             probes[i] = 0;
+        }
+    }
+
+    public final boolean isSame(CrProbeUnit another) {
+        return (this.classId == another.classId) && (this.probesCount == another.getProbesCount());
+    }
+
+    public final void merge(CrProbeUnit another) {
+        if (!isSame(another)) {
+            return;
+        }
+
+        for (int i = 0; i < probesCount; i++) {
+            probes[i] += another.probes[i];
         }
     }
 }
