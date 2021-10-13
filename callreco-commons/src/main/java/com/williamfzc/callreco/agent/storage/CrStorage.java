@@ -25,11 +25,19 @@ public class CrStorage {
         return data;
     }
 
+    private boolean isEmpty() {
+        return data.isEmpty();
+    }
+
     public final String dump() {
         return dump(false);
     }
 
     public final String dump(boolean reset) {
+        if (isEmpty()) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
         data.values().forEach(each -> {
             sb.append(each.dump());

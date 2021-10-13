@@ -35,6 +35,10 @@ public class CrProbeUnit {
     }
 
     public String dump() {
+        if (probesCount == 0) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append(classId);
         sb.append(FLAG_SPLIT);
