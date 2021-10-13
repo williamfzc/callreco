@@ -63,4 +63,10 @@ public class CrProbeUnit {
         int probesCount = probes.length;
         return new CrProbeUnit(classId, probesCount, probes);
     }
+
+    public final void reset() {
+        for (int i = 0; i < probesCount; i++) {
+            probes[i] = 0;
+        }
+    }
 }

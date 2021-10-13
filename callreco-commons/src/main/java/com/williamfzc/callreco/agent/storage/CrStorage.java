@@ -46,9 +46,13 @@ public class CrStorage {
         sb.setLength(sb.length() - 1);
 
         if (reset) {
-            data.clear();
+            reset();
         }
         return sb.toString();
+    }
+
+    public final void reset() {
+        data.values().forEach(CrProbeUnit::reset);
     }
 
     static {
