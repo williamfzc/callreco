@@ -50,5 +50,12 @@ class TestSmoke {
         val methodMapping = CrWeaveRecorder.dump()
         CrAnalyzer.load(methodMapping)
         CrAnalyzer.loadRuntimeData(rtData)
+        val result = CrAnalyzer.analyze()
+        result.data.forEach { each ->
+            println(each.clazzInfo)
+            each.methodData.forEach { eachMethod ->
+                println("${eachMethod.methodInfo}, hit: ${eachMethod.hitCount}")
+            }
+        }
     }
 }

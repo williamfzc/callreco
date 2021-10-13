@@ -28,6 +28,7 @@ class CrWeaveAdapter(
     private lateinit var clazzName: String
     private var clazzId: Long = -1
     private var methodCounter: Int = 0
+    private val methodList = mutableListOf<CrMethodInfo>()
 
     override fun visit(
             version: Int,
@@ -45,6 +46,8 @@ class CrWeaveAdapter(
 
     override fun visitEnd() {
         createDeclaration()
+        // record this class
+        CrWeaveRecorder.put(clazzId, CrClazzInfo(clazzId, clazzName, methodList))
         super.visitEnd()
     }
 
@@ -56,13 +59,14 @@ class CrWeaveAdapter(
             exceptions: Array<out String>?
     ): MethodVisitor {
         val mv = cv.visitMethod(access, name, descriptor, signature, exceptions)
-        return CrWeaveMethodAdapter(clazzName, nextMethodId(), api, mv, access, name, descriptor)
+        val methodInfo = CrMethodInfo(name.orEmpty(), descriptor.orEmpty(), signature.orEmpty())
+        methodList.add(methodInfo)
+        val curMethodId = nextMethodId()
+        return CrWeaveMethodAdapter(clazzName, curMethodId, api, mv, access, name, descriptor)
     }
 
     private fun genClazzId(): Long {
-        val uniqueId = IdGenerator.calcId(clazzName)
-        CrWeaveRecorder.put(uniqueId, clazzName)
-        return uniqueId
+        return IdGenerator.calcId(clazzName)
     }
 
     private fun createCrField() {

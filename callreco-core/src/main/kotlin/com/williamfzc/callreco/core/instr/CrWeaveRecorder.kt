@@ -4,5 +4,5 @@ import com.williamfzc.callreco.core.analyze.BaseMappingHandler
 
 
 object CrWeaveRecorder : BaseMappingHandler() {
-    fun put(clazzId: Long, clazzName: String) = methodMapping.put(clazzId, clazzName)
+    fun put(clazzId: Long, clazzInfo: CrClazzInfo) = methodMapping.put(clazzId, clazzInfo)
 }
