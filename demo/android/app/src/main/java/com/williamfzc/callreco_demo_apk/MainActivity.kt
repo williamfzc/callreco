@@ -3,6 +3,7 @@ package com.williamfzc.callreco_demo_apk
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.williamfzc.callreco.agent.rt.CrRuntime
+import com.williamfzc.callreco_demo_apk.mod1.FuncA
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +20,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun b() {
-        CrRuntime.INSTANCE.allProbes.forEach { t, u ->
-            println("t: $t, u: $u")
-        }
+        FuncA.call()
+    }
+
+    override fun onDestroy() {
+        println(CrRuntime.INSTANCE.dump(true))
+        super.onDestroy()
     }
 }

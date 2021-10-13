@@ -9,8 +9,8 @@ version 'unspecified'
 
 dependencies {
     implementation project(':callreco-commons')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.30"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.ver_kt}"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:${rootProject.ext.ver_kt_serialization}"
     implementation 'org.ow2.asm:asm:9.2'
     implementation 'org.ow2.asm:asm-commons:9.2'
 

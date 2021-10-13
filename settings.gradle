@@ -1,3 +1,11 @@
+pluginManagement {
+    plugins {
+        id 'org.jetbrains.kotlin.jvm' version '1.4.30'
+        id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
+        id "com.diffplug.spotless" version "5.15.2"
+    }
+}
+
 include 'callreco-android-plugin'
 include 'callreco-core'
 include 'callreco-agent'
