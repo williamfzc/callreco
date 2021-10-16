@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group 'com.williamfzc.callreco'
-version 'unspecified'
+version rootProject.ext.ver_callreco
 
 repositories {
     mavenCentral()

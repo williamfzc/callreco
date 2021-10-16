@@ -2,10 +2,11 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'maven-publish'
 }
 
 group 'com.williamfzc.callreco'
-version 'unspecified'
+version rootProject.ext.ver_callreco
 
 dependencies {
     implementation project(':callreco-commons')
